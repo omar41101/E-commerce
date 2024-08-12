@@ -15,7 +15,7 @@ const creatUser = asyncHandler(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   //adding user to db
-  const newUser = new user({ username, email, password: hashedPassword });
+  const newUser = new User({ username, email, password: hashedPassword });
   try {
     await newUser.save();
     createToken(res, newUser._id);
