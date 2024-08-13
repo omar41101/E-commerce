@@ -33,24 +33,35 @@ const creatUser = asyncHandler(async (req, res) => {
 });
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  // Check if the user exists in the database
   const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-    if (isPasswordValid) {
-      createToken(res, existingUser._id);
-      res.status(201).json({
-        _id: existingUser._id,
-        username: existingUser.username,
-        email: existingUser.email,
-        isAdmin: existingUser.isAdmin,
-      });
-      return;
-    }
+
+  if (!existingUser) {
+    // If user does not exist, return an error response
+    res.status(404);
+    throw new Error("User not found");
   }
+
+  // Check if the password is valid
+  const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+
+  if (!isPasswordValid) {
+    // If the password is incorrect, return an error response
+    res.status(401);
+    throw new Error("Incorrect password");
+  }
+
+  // If email and password are valid, create a token and return user details
+  createToken(res, existingUser._id);
+  res.status(200).json({
+    _id: existingUser._id,
+    username: existingUser.username,
+    email: existingUser.email,
+    isAdmin: existingUser.isAdmin,
+  });
 });
+
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,

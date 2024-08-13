@@ -12,15 +12,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/usersApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
+import { Dropdown } from "flowbite-react";
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,13 +43,13 @@ const Navigation = () => {
       <div className="flex flex-col space-y-8">
         <Link
           to="/"
-          className="flex items-center space-x-2 hover:translate-x-2 transition-transform"
+          className="flex items-center space-x-2 hover:translate-x-2 transition-transform group"
         >
-          <AiOutlineHome size={24} />
+          <AiOutlineHome size={24} className="group-hover:text-pink-500" />
           <span
             className={`${
               sidebarExpanded ? "inline-block" : "hidden"
-            } text-sm font-medium`}
+            } text-sm font-medium group-hover:text-pink-500`}
           >
             Home
           </span>
@@ -61,13 +57,13 @@ const Navigation = () => {
 
         <Link
           to="/shop"
-          className="flex items-center space-x-2 hover:translate-x-2 transition-transform"
+          className="flex items-center space-x-2 hover:translate-x-2 transition-transform group"
         >
-          <AiOutlineShopping size={24} />
+          <AiOutlineShopping size={24} className="group-hover:text-pink-500" />
           <span
             className={`${
               sidebarExpanded ? "inline-block" : "hidden"
-            } text-sm font-medium`}
+            } text-sm font-medium group-hover:text-pink-500`}
           >
             Shop
           </span>
@@ -75,13 +71,16 @@ const Navigation = () => {
 
         <Link
           to="/cart"
-          className="flex items-center space-x-2 hover:translate-x-2 transition-transform"
+          className="flex items-center space-x-2 hover:translate-x-2 transition-transform group"
         >
-          <AiOutlineShoppingCart size={24} />
+          <AiOutlineShoppingCart
+            size={24}
+            className="group-hover:text-pink-500"
+          />
           <span
             className={`${
               sidebarExpanded ? "inline-block" : "hidden"
-            } text-sm font-medium`}
+            } text-sm font-medium group-hover:text-pink-500`}
           >
             Cart
           </span>
@@ -89,149 +88,85 @@ const Navigation = () => {
 
         <Link
           to="/favorite"
-          className="flex items-center space-x-2 hover:translate-x-2 transition-transform"
+          className="flex items-center space-x-2 hover:translate-x-2 transition-transform group"
         >
-          <FaHeart size={24} />
+          <FaHeart size={24} className="group-hover:text-pink-500" />
           <span
             className={`${
               sidebarExpanded ? "inline-block" : "hidden"
-            } text-sm font-medium`}
+            } text-sm font-medium group-hover:text-pink-500`}
           >
             Favorites
           </span>
         </Link>
       </div>
 
-      <div className="relative group">
+      <div className="relative group ">
         {userInfo ? (
-          <div
-            className="flex items-center justify-between w-full text-sm font-medium text-white focus:outline-none cursor-pointer"
-            onClick={toggleDropdown}
+          <Dropdown
+            label={userInfo.username}
+            inline={true}
+            arrowIcon={false}
+            className={`${
+              sidebarExpanded ? "block" : "hidden"
+            } bg-black text-white ml-14 mt-3 `}
           >
-            <span
-              className={`${
-                sidebarExpanded ? "inline-block" : "hidden"
-              }`}
-            >
-              {userInfo.username}
-            </span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={`h-4 w-4 transition-transform ${
-                dropdownOpen ? "rotate-180" : ""
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="white"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
-              />
-            </svg>
-          </div>
-        ) : null}
-
-        {dropdownOpen && userInfo && sidebarExpanded && (
-          <ul className="absolute left-0 bottom-full mb-2 bg-white text-gray-700 rounded-md shadow-lg overflow-hidden">
             {userInfo.isAdmin && (
               <>
-                <li>
-                  <Link
-                    to="/admin/dashboard"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/admin/productlist"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Products
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/admin/categorylist"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Categories
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/admin/orderlist"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Orders
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/admin/userlist"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Users
-                  </Link>
-                </li>
+                <Dropdown.Item className="hover:text-pink-500">
+                  <Link to="/admin/dashboard">Dashboard</Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="hover:text-pink-500">
+                  <Link to="/admin/productlist">Products</Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="hover:text-pink-500">
+                  <Link to="/admin/categorylist">Categories</Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="hover:text-pink-500">
+                  <Link to="/admin/orderlist">Orders</Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="hover:text-pink-500">
+                  <Link to="/admin/userlist">Users</Link>
+                </Dropdown.Item>
               </>
             )}
-            <li>
-              <Link
-                to="/admin/profile"
-                className="block px-4 py-2 hover:bg-gray-100"
+            <Dropdown.Item className="hover:text-pink-500">
+              <Link to="/profile">Profile</Link>
+            </Dropdown.Item>
+            <Dropdown.Item className="hover:text-pink-500" onClick={logoutHandler}>Logout</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <div className="flex flex-col space-y-14">
+            <Link
+              to="/login"
+              className="flex items-center space-x-2 hover:translate-x-2 transition-transform group"
+            >
+              <AiOutlineLogin size={24} className="hover:text-pink-500" />
+              <span
+                className={`${
+                  sidebarExpanded ? "inline-block" : "hidden"
+                } text-sm font-medium hover:text-pink-500`}
               >
-                Profile
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/logout"
-                onClick={logoutHandler}
-                className="block px-4 py-2 hover:bg-gray-100"
+                Log In
+              </span>
+            </Link>
+
+            <Link
+              to="/register"
+              className="flex items-center space-x-2 hover:translate-x-2 transition-transform group"
+            >
+              <AiOutlineUserAdd size={24} className="hover:text-pink-500" />
+              <span
+                className={`${
+                  sidebarExpanded ? "inline-block" : "hidden"
+                } text-sm font-medium hover:text-pink-500`}
               >
-                Logout
-              </Link>
-            </li>
-          </ul>
+                Register
+              </span>
+            </Link>
+          </div>
         )}
       </div>
-
-      {!userInfo && (
-        <div className="flex flex-col space-y-8">
-          <Link
-            to="/login"
-            className="flex items-center space-x-2 hover:translate-x-2 transition-transform"
-          >
-            <AiOutlineLogin size={24} />
-            <span
-              className={`${
-                sidebarExpanded ? "inline-block" : "hidden"
-              } text-sm font-medium`}
-            >
-              LOG IN
-            </span>
-          </Link>
-
-          <Link
-            to="/register"
-            className="flex items-center space-x-2 hover:translate-x-2 transition-transform"
-          >
-            <AiOutlineUserAdd size={24} />
-            <span
-              className={`${
-                sidebarExpanded ? "inline-block" : "hidden"
-              } text-sm font-medium`}
-            >
-              Register
-            </span>
-          </Link>
-        </div>
-      )}
     </div>
   );
 };
