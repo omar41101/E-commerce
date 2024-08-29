@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 // ⚠️⚠️⚠️ don't forget this ⚠️⚠️⚠️⚠️
 import AdminMenu from "./AdminMenu";
+import withAdminLayout from "./withAdminLayout";
 
 const UserList = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
@@ -176,4 +177,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default withAdminLayout (UserList);
