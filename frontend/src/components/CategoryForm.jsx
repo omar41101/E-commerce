@@ -1,36 +1,42 @@
-const CategoryForm = ({
-  value,
-  setValue,
-  handleSubmit,
-  buttonText = "Add",
-  handleDelete,
-  placeholder = "Enter category name",
-}) => {
+const CategoryForm = ({ value, setValue, handleSubmit, handleDelete, buttonText }) => {
   return (
-    <div className="p-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center">
+      <div className="mb-4 w-full">
+        <label htmlFor="categoryName" className="block text-sm font-medium text-gray-300 mb-2">
+          Category Name
+        </label>
         <input
           type="text"
-          className="py-3 px-4 border rounded-lg w-full bg-gray-800 text-white placeholder-gray-500"
-          placeholder={placeholder}
+          id="categoryName"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          className="w-full p-2 border border-gray-400 rounded-md bg-gray-700 text-white"
+          placeholder="Enter category name"
         />
-        <div className="flex justify-between">
-          <button className="bg-pink-500 text-white py-2 px-6 rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">
-            {buttonText}
+      </div>
+
+      {/* Buttons for both update and delete */}
+      <div className="flex justify-between w-full mt-4">
+        {/* Update button */}
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        >
+          {buttonText || "Submit"}
+        </button>
+
+        {/* Delete button */}
+        {handleDelete && (
+          <button
+            type="button"
+            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+            onClick={handleDelete}
+          >
+            Delete Category
           </button>
-          {handleDelete && (
-            <button
-              onClick={handleDelete}
-              className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-            >
-              Delete
-            </button>
-          )}
-        </div>
-      </form>
-    </div>
+        )}
+      </div>
+    </form>
   );
 };
 

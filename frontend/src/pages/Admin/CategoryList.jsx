@@ -12,7 +12,7 @@ import AdminMenu from "./AdminMenu";
 import withAdminLayout from './withAdminLayout';
 
 const CategoryList = () => {
-  const { data: categories } = useFetchCategoriesQuery();
+  const { data: categories, refetch } = useFetchCategoriesQuery();
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [updatingName, setUpdatingName] = useState("");
@@ -21,7 +21,9 @@ const CategoryList = () => {
   const [createCategory] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
+  
 
+  // Handle creating category
   const handleCreateCategory = async (e) => {
     e.preventDefault();
 
@@ -42,6 +44,7 @@ const CategoryList = () => {
         icon: "success",
       });
       setName("");
+      refetch();
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -52,6 +55,7 @@ const CategoryList = () => {
     }
   };
 
+  // Handle updating category
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
 
@@ -80,6 +84,7 @@ const CategoryList = () => {
       setSelectedCategory(null);
       setUpdatingName("");
       setModalVisible(false);
+      refetch();
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -90,7 +95,17 @@ const CategoryList = () => {
     }
   };
 
+  // Handle deleting category
   const handleDeleteCategory = async () => {
+    if (!selectedCategory || !selectedCategory._id) {
+      Swal.fire({
+        title: "Error",
+        text: "No category selected or missing category ID",
+        icon: "error",
+      });
+      return;
+    }
+  
     Swal.fire({
       title: "Are you sure?",
       text: `Do you really want to delete the category "${selectedCategory.name}"?`,
@@ -102,16 +117,20 @@ const CategoryList = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const result = await deleteCategory(selectedCategory._id).unwrap();
-
+          const deletedCategory = await deleteCategory({ categoryId: selectedCategory._id }).unwrap();
+  
           Swal.fire({
             title: "Deleted!",
-            text: `${result.name} has been deleted.`,
+            text: `${deletedCategory.name} has been deleted.`,
             icon: "success",
           });
-
+  
           setSelectedCategory(null);
           setModalVisible(false);
+  
+          // Refetch the categories to get the updated list
+          refetch();
+  
         } catch (error) {
           console.error(error);
           Swal.fire({
@@ -123,10 +142,11 @@ const CategoryList = () => {
       }
     });
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <AdminMenu/>
+      <AdminMenu />
       <div className="md:w-3/4 p-6 bg-gray-800 rounded-lg shadow-lg">
         <div className="text-2xl font-bold text-white mb-6 text-center">Manage Categories</div>
         <div className="bg-gray-700 p-4 rounded-lg mb-8">
@@ -147,6 +167,7 @@ const CategoryList = () => {
                   className="text-pink-500 hover:text-pink-600 focus:outline-none"
                   onClick={() => {
                     setModalVisible(true);
+                    console.log(category);
                     setSelectedCategory(category);
                     setUpdatingName(category.name);
                   }}
@@ -158,13 +179,14 @@ const CategoryList = () => {
           ))}
         </div>
 
+        {/* Modal with Update and Delete functionality */}
         <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
           <CategoryForm
             value={updatingName}
             setValue={(value) => setUpdatingName(value)}
             handleSubmit={handleUpdateCategory}
             buttonText="Update"
-            handleDelete={handleDeleteCategory}
+            handleDelete={handleDeleteCategory} // Pass delete handler to CategoryForm
           />
         </Modal>
       </div>

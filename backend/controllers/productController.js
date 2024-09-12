@@ -33,25 +33,11 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const updateProductDetails = asyncHandler(async (req, res) => {
     try {
-        const { name, description, price, category, quantity, brand } = req.fields
-
-        switch (true) {
-            case !name:
-                return res.json({ error: "name is requires" })
-            case !description:
-                return res.json({ error: "description is requires" })
-            case !price:
-                return res.json({ error: "price is requires" })
-            case !category:
-                return res.json({ error: "category is requires" })
-            case !quantity:
-                return res.json({ error: "quantity is requires" })
-            case !brand:
-                return res.json({ error: "brand is requires" })
-        }
+ 
+      
         const product = await Product.findByIdAndUpdate(req.params.id, { ...req.fields }, { new: true })
         await product.save
-        res.json(product)
+        res.json({ message: "Product updated successfully", product });
 
 
     } catch (error) {
