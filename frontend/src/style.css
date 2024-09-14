@@ -8,3 +8,21 @@ body {
  input,textarea{
   color: #000;
  }
+ img {
+  transition: transform 0.3s ease-in-out;
+}
+img:hover {
+  transform: scale(1.05);
+}
+
+button, h1, h2 {
+  font-family: 'Inter', sans-serif;
+}
+
+.shadow-lg:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.text-gray-700 {
+  color: #4a4a4a;
+}
