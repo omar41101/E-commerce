@@ -1,1 +1,124 @@
- 
+/* Enhanced Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem;
+    background-color: #000;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .sidebar-expanded {
+    width: 12rem; /* Adjusted width for smooth expansion */
+  }
+  
+  .sidebar-collapsed {
+    width: 4rem; /* Narrower collapsed state */
+  }
+  
+  /* Enhanced Link Styling */
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar a:hover {
+    transform: translateX(0.5rem);
+    color: #ff6bcb; /* Enhanced hover color */
+  }
+  /* Enhanced Favorite and Cart Count Styles */
+.icon-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px; /* Adjust the size as needed */
+    height: 20px;
+    padding: 0.25em; /* Adds some padding around the text */
+    background-color: #ff6bcb; /* Bright color to stand out */
+    color: #fff;
+    border-radius: 50%; /* Circular shape */
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-left: 0.5rem; /* Space from the icon */
+    position: relative; /* Aligns the count relative to the icon */
+    top: -0.1em; /* Adjust vertical alignment if necessary */
+  }
+  
+  /* Ensure the container flex properties align items correctly */
+  .flex-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  .sidebar a .icon {
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar a .icon:hover {
+    color: #ff6bcb;
+  }
+  
+  /* Text visibility based on expansion */
+  .sidebar .text {
+    display: none;
+  }
+  
+  .sidebar-expanded .text {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  /* Favorite Count Styles */
+  .favorite-count {
+    display: inline-block;
+    background-color: #ff6bcb;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Dropdown Enhancements */
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    background-color: #000;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s ease;
+  }
+  
+  .dropdown-menu a {
+    color: #fff;
+    padding: 0.5rem 0;
+  }
+  
+  .dropdown-menu a:hover {
+    color: #ff6bcb;
+  }
+  
+  /* Responsive Styles */
+  @media screen and (max-width: 768px) {
+    .sidebar-expanded {
+      width: 10rem;
+    }
+  }
+  
