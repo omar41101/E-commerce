@@ -50,7 +50,7 @@ const Navigation = () => {
           <AiOutlineShoppingCart size={24} className="group-hover:text-pink-500" />
           {sidebarExpanded && <span className="text-sm font-medium group-hover:text-pink-500">Cart</span>}
         </Link>
-        <Link to="/favorite" className="flex items-center space-x-2 group relative">
+        <Link to="/favorites" className="flex items-center space-x-1 group relative">
           <FaHeart size={24} className="group-hover:text-pink-500" />
           {sidebarExpanded && <span className="text-sm font-medium group-hover:text-pink-500">Favorites</span>}
           <FavoritesCount />

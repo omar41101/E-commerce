@@ -1,10 +1,13 @@
 /* Enhanced Sidebar Styles */
 .sidebar {
+  overflow: visible;
+  width: 4rem; /* Collapsed width */
+  transition: width 0.3s ease;
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    padding: 1rem;
+    padding: 2%;
     background-color: #000;
     color: #fff;
     transition: all 0.3s ease-in-out;
@@ -16,7 +19,7 @@
   }
   
   .sidebar-expanded {
-    width: 12rem; /* Adjusted width for smooth expansion */
+    width: 12rem; /* Expanded width */
   }
   
   .sidebar-collapsed {
