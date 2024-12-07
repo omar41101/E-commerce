@@ -37,10 +37,11 @@ const CategoryList = () => {
     }
 
     try {
-      const result = await createCategory({ name }).unwrap();
+      const result = await createCategory({ name })
+      console.log(result)
       Swal.fire({
         title: "Success",
-        text: `${result.name} has been created.`,
+        text: `Category has been created.`,
         icon: "success",
       });
       setName("");
@@ -78,7 +79,7 @@ const CategoryList = () => {
 
       Swal.fire({
         title: "Success",
-        text: `${result.name} has been updated.`,
+        text: ` Category has been updated.`,
         icon: "success",
       });
       setSelectedCategory(null);
@@ -117,8 +118,8 @@ const CategoryList = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const deletedCategory = await deleteCategory({ categoryId: selectedCategory._id }).unwrap();
-  
+          const deletedCategory = await deleteCategory({ categoryId: selectedCategory._id });
+          console.log(deleteCategory)
           Swal.fire({
             title: "Deleted!",
             text: `${deletedCategory.name} has been deleted.`,

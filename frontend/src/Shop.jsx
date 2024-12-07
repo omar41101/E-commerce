@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetFilteredProductsQuery } from "./redux/api/productApiSlice.js";
 import { useFetchCategoriesQuery } from "./redux/api/categoryApiSlice.js";
+import { useGetProductsQuery } from "./redux/api/productApiSlice.js";
 
 import {
   setCategories,
@@ -20,7 +21,8 @@ const Shop = () => {
   const categoriesQuery = useFetchCategoriesQuery();
   const [priceFilter, setPriceFilter] = useState("");
 
-  const filteredProductsQuery = useGetFilteredProductsQuery({
+  // Ensure we return an empty array if no data
+  const filteredProductsQuery = useGetProductsQuery({
     checked,
     radio,
   });
@@ -33,7 +35,7 @@ const Shop = () => {
 
   useEffect(() => {
     if (!checked.length || !radio.length) {
-      if (!filteredProductsQuery.isLoading) {
+      if (!filteredProductsQuery.isLoading && filteredProductsQuery.data) {
         // Filter products based on both checked categories and price filter
         const filteredProducts = filteredProductsQuery.data.filter(
           (product) => {
@@ -96,11 +98,7 @@ const Shop = () => {
                     onChange={(e) => handleCheck(e.target.checked, c._id)}
                     className="w-4 h-4 text-pink-600 bg-gray-200 rounded focus:ring-pink-500"
                   />
-                  <label
-                    className="ml-3 text-sm text-gray-300"
-                  >
-                    {c.name}
-                  </label>
+                  <label className="ml-3 text-sm text-gray-300">{c.name}</label>
                 </div>
               ))}
             </div>
@@ -119,11 +117,7 @@ const Shop = () => {
                     onChange={() => handleBrandClick(brand)}
                     className="w-4 h-4 text-pink-600 bg-gray-200 rounded focus:ring-pink-500"
                   />
-                  <label
-                    className="ml-3 text-sm text-gray-300"
-                  >
-                    {brand}
-                  </label>
+                  <label className="ml-3 text-sm text-gray-300">{brand}</label>
                 </div>
               ))}
             </div>
@@ -157,7 +151,7 @@ const Shop = () => {
               {products?.length} Products
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.length === 0 ? (
+              {products?.length === 0 ? (
                 <Loader />
               ) : (
                 products?.map((p) => (

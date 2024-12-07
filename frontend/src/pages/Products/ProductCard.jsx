@@ -17,26 +17,28 @@ const ProductCard = ({ p }) => {
   };
 
   return (
-    <div className="max-w-sm relative bg-[#1A1A1A] rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800 dark:border-gray-700">
+    <div className="max-w-sm relative bg-gradient-to-b from-[#1A1A1A] to-[#2A2A2A] rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
       <section className="relative">
         <Link to={`/product/${p._id}`}>
-          <span className="absolute bottom-3 right-3 bg-pink-100 text-pink-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-pink-900 dark:text-pink-300">
+          <span className="absolute bottom-3 right-3 bg-pink-600 text-white text-xs font-medium mr-2 px-3 py-1 rounded-full shadow-md">
             {p?.brand}
           </span>
           <img
-            className="cursor-pointer w-full rounded-t-lg"
+            className="cursor-pointer w-full rounded-t-lg transition-transform duration-300 hover:scale-110"
             src={p.image}
             alt={p.name}
-            style={{ height: "170px", objectFit: "cover" }}
+            style={{ height: "180px", objectFit: "cover" }}
           />
         </Link>
         <HeartIcon product={p} />
       </section>
 
-      <div className="p-5">
-        <div className="flex justify-between items-center mb-3">
-          <h5 className="text-xl font-bold text-white truncate">{p?.name}</h5>
-          <p className="text-pink-500 font-semibold">
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h5 className="text-lg font-semibold text-gray-100 truncate">
+            {p?.name}
+          </h5>
+          <p className="text-lg font-bold text-pink-400">
             {p?.price?.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -44,14 +46,14 @@ const ProductCard = ({ p }) => {
           </p>
         </div>
 
-        <p className="mb-3 text-gray-400 text-sm h-12 overflow-hidden">
+        <p className="mb-4 text-gray-400 text-sm h-12 overflow-hidden">
           {p?.description?.substring(0, 60)}...
         </p>
 
-        <section className="flex justify-between items-center mt-4">
+        <section className="flex justify-between items-center">
           <Link
             to={`/product/${p._id}`}
-            className="inline-flex items-center px-4 py-2 bg-pink-700 text-white text-sm font-medium rounded-lg hover:bg-pink-800 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-300"
+            className="inline-flex items-center px-5 py-2 bg-pink-600 text-white text-sm font-medium rounded-lg hover:bg-pink-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400"
           >
             Read More
             <svg
@@ -71,10 +73,10 @@ const ProductCard = ({ p }) => {
           </Link>
 
           <button
-            className="p-2 bg-gray-800 hover:bg-gray-700 text-white rounded-full transition duration-300"
+            className="p-3 bg-gray-700 hover:bg-gray-600 text-white rounded-full shadow-md transition duration-300"
             onClick={() => addToCartHandler(p, 1)}
           >
-            <AiOutlineShoppingCart size={25} />
+            <AiOutlineShoppingCart size={20} />
           </button>
         </section>
       </div>

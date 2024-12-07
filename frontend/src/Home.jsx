@@ -9,7 +9,7 @@ const Home = () => {
   const { data, isLoading, isError } = useGetProductsQuery({ keyword });
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800 mx-auto">
+    <div className="min-h-screen bg-gradient-to-r from-pink-500 to-black text-white mx-auto">
       {!keyword && <Header />}
 
       {isLoading ? (
@@ -20,10 +20,10 @@ const Home = () => {
         <div className="container mx-auto px-6 py-8">
           {/* Top Section */}
           <div className="flex justify-between items-center mb-10">
-            <h1 className="text-4xl font-bold text-gray-900 ml-20">Top Products</h1>
+            <h1 className="text-4xl font-bold text-white ml-20">Top Products</h1>
             <Link
               to="/shop"
-              className="bg-pink-600 text-white font-bold rounded-full py-2 px-6 hover:bg-pink-700 transition-transform transform hover:scale-105"
+              className="bg-pink-600 text-white font-bold rounded-full py-2 px-6 hover:bg-pink-700 transition-all duration-300 transform hover:scale-105"
             >
               View All Products
             </Link>
@@ -34,7 +34,7 @@ const Home = () => {
             {data?.products.map((product) => (
               <div
                 key={product._id}
-                className="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                 style={{ height: '380px' }} // Ensures all cards are the same height
               >
                 {/* Product Image */}
@@ -56,7 +56,7 @@ const Home = () => {
 
                   <Link
                     to={`/product/${product._id}`}
-                    className="text-pink-600 hover:text-pink-800 text-sm mt-2 inline-block"
+                    className="text-pink-600 hover:text-pink-700 text-sm mt-2 inline-block"
                   >
                     More details
                   </Link>

@@ -4,9 +4,9 @@ import { authentificate, authorizeAdmin } from "../middlewares/authMiddleware.js
 const router = express.Router()
 
 
-router.route("/").post(authentificate, authorizeAdmin, createCategory);
+router.route("/").post(createCategory);
 router.route("/:categoryId").put(authentificate, authorizeAdmin, updateCategory)
-router.route("/:categoryId").delete(authentificate, authorizeAdmin, deleteCategory)
+router.route("/:categoryId").delete(deleteCategory)
 router.route("/categories").get(listCategory)
 router.route("/:id").get(readCategory)
 export default router
