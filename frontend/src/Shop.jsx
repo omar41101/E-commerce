@@ -1,170 +1,325 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useGetFilteredProductsQuery } from "./redux/api/productApiSlice.js";
-import { useFetchCategoriesQuery } from "./redux/api/categoryApiSlice.js";
-import { useGetProductsQuery } from "./redux/api/productApiSlice.js";
-
-import {
-  setCategories,
-  setProducts,
-  setChecked,
-} from "./redux/features/shop/shopSlice";
+import { useState, useEffect } from "react";
+import { useGetProductsQuery } from "./redux/api/productApiSlice";
+import { FaStar, FaShoppingCart, FaHeart, FaGamepad, FaDesktop, FaMobile, FaSearch, FaFilter } from "react-icons/fa";
+import { SiPlaystation, SiXbox, SiNintendo, SiSteam } from "react-icons/si";
+import { Link } from "react-router-dom";
 import Loader from "./components/Loader";
-import ProductCard from "./pages/Products/ProductCard.jsx";
+import Message from "./components/Message";
+import { addToCart } from "./redux/features/cart/cartSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Shop = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12);
+
   const dispatch = useDispatch();
-  const { categories, products, checked, radio } = useSelector(
-    (state) => state.shop
-  );
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
-  const categoriesQuery = useFetchCategoriesQuery();
-  const [priceFilter, setPriceFilter] = useState("");
+  const platformIcons = {
+    PC: <FaDesktop className="text-tech-blue" />,
+    PlayStation: <SiPlaystation className="text-tech-purple" />,
+    Xbox: <SiXbox className="text-tech-emerald" />,
+    Nintendo: <SiNintendo className="text-tech-red" />,
+    Steam: <SiSteam className="text-tech-cyan" />,
+    Mobile: <FaMobile className="text-tech-pink" />,
+  };
 
-  // Ensure we return an empty array if no data
-  const filteredProductsQuery = useGetProductsQuery({
-    checked,
-    radio,
+  const categories = ["Action", "Adventure", "RPG", "Strategy", "Sports", "Racing", "Puzzle", "Horror"];
+  const platforms = ["PC", "PlayStation", "Xbox", "Nintendo", "Steam", "Mobile"];
+
+  // Filter and search products
+  const filteredProducts = products?.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = !selectedCategory || product.category === selectedCategory;
+    const matchesPlatform = !selectedPlatform || product.platform?.includes(selectedPlatform);
+    
+    return matchesSearch && matchesCategory && matchesPlatform;
+  }) || [];
+
+  // Sort products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case "price-low":
+        return a.price - b.price;
+      case "price-high":
+        return b.price - a.price;
+      case "name":
+        return a.name.localeCompare(b.name);
+      case "rating":
+        return (b.rating || 0) - (a.rating || 0);
+      default:
+        return 0;
+    }
   });
 
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+
+  const addToCartHandler = (product) => {
+    dispatch(addToCart({ ...product, qty: 1 }));
+    toast.success("Item added to cart");
+  };
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("");
+    setSelectedPlatform("");
+    setSortBy("");
+    setCurrentPage(1);
+  };
+
   useEffect(() => {
-    if (!categoriesQuery.isLoading) {
-      dispatch(setCategories(categoriesQuery.data));
-    }
-  }, [categoriesQuery.data, dispatch]);
-
-  useEffect(() => {
-    if (!checked.length || !radio.length) {
-      if (!filteredProductsQuery.isLoading && filteredProductsQuery.data) {
-        // Filter products based on both checked categories and price filter
-        const filteredProducts = filteredProductsQuery.data.filter(
-          (product) => {
-            return (
-              product.price.toString().includes(priceFilter) ||
-              product.price === parseInt(priceFilter, 10)
-            );
-          }
-        );
-
-        dispatch(setProducts(filteredProducts));
-      }
-    }
-  }, [checked, radio, filteredProductsQuery.data, dispatch, priceFilter]);
-
-  const handleBrandClick = (brand) => {
-    const productsByBrand = filteredProductsQuery.data?.filter(
-      (product) => product.brand === brand
-    );
-    dispatch(setProducts(productsByBrand));
-  };
-
-  const handleCheck = (value, id) => {
-    const updatedChecked = value
-      ? [...checked, id]
-      : checked.filter((c) => c !== id);
-    dispatch(setChecked(updatedChecked));
-  };
-
-  // Add "All Brands" option to uniqueBrands
-  const uniqueBrands = [
-    ...Array.from(
-      new Set(
-        filteredProductsQuery.data
-          ?.map((product) => product.brand)
-          .filter((brand) => brand !== undefined)
-      )
-    ),
-  ];
-
-  const handlePriceChange = (e) => {
-    setPriceFilter(e.target.value);
-  };
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, selectedPlatform, sortBy]);
 
   return (
-    <>
-      <div className="container mx-auto p-4">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Sidebar */}
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full md:w-1/4">
-            {/* Categories */}
-            <h2 className="text-lg text-center font-semibold text-white mb-4">
-              Filter by Categories
-            </h2>
-            <div className="space-y-3">
-              {categories?.map((c) => (
-                <div key={c._id} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    onChange={(e) => handleCheck(e.target.checked, c._id)}
-                    className="w-4 h-4 text-pink-600 bg-gray-200 rounded focus:ring-pink-500"
-                  />
-                  <label className="ml-3 text-sm text-gray-300">{c.name}</label>
-                </div>
-              ))}
+    <div className="min-h-screen bg-tech-black text-tech-white py-8">
+      <div className="container mx-auto px-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text">
+            GAME STORE
+          </h1>
+          <p className="text-xl text-tech-text-secondary">
+            Discover the latest and greatest games from top developers
+          </p>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="tech-card p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Search */}
+            <div className="relative">
+              <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-tech-text-secondary" />
+              <input
+                type="text"
+                placeholder="Search games..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="tech-search w-full pl-12"
+              />
             </div>
 
-            {/* Brands */}
-            <h2 className="text-lg text-center font-semibold text-white mt-8 mb-4">
-              Filter by Brands
-            </h2>
-            <div className="space-y-3">
-              {uniqueBrands?.map((brand) => (
-                <div key={brand} className="flex items-center">
-                  <input
-                    type="radio"
-                    id={brand}
-                    name="brand"
-                    onChange={() => handleBrandClick(brand)}
-                    className="w-4 h-4 text-pink-600 bg-gray-200 rounded focus:ring-pink-500"
-                  />
-                  <label className="ml-3 text-sm text-gray-300">{brand}</label>
-                </div>
+            {/* Category Filter */}
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="tech-search"
+            >
+              <option value="">All Categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
               ))}
-            </div>
+            </select>
 
-            {/* Price Filter */}
-            <h2 className="text-lg text-center font-semibold text-white mt-8 mb-4">
-              Filter by Price
-            </h2>
-            <input
-              type="text"
-              placeholder="Enter Price"
-              value={priceFilter}
-              onChange={handlePriceChange}
-              className="w-full px-4 py-2 text-gray-800 bg-white rounded-lg focus:ring focus:ring-pink-400 focus:outline-none"
-            />
+            {/* Platform Filter */}
+            <select
+              value={selectedPlatform}
+              onChange={(e) => setSelectedPlatform(e.target.value)}
+              className="tech-search"
+            >
+              <option value="">All Platforms</option>
+              {platforms.map((platform) => (
+                <option key={platform} value={platform}>
+                  {platform}
+                </option>
+              ))}
+            </select>
 
-            {/* Reset Button */}
-            <div className="mt-6">
+            {/* Sort */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="tech-search"
+            >
+              <option value="">Sort By</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name</option>
+              <option value="rating">Rating</option>
+            </select>
+          </div>
+
+          {/* Clear Filters */}
+          {(searchTerm || selectedCategory || selectedPlatform || sortBy) && (
+            <div className="mt-4 flex justify-center">
               <button
-                className="w-full px-4 py-2 text-white bg-pink-600 hover:bg-pink-700 rounded-lg focus:ring focus:ring-pink-400"
-                onClick={() => window.location.reload()}
+                onClick={clearFilters}
+                className="tech-btn bg-gradient-to-r from-tech-orange to-tech-yellow hover:from-tech-yellow hover:to-tech-orange text-sm px-6 py-2"
               >
-                Reset
+                <FaFilter className="mr-2" />
+                CLEAR FILTERS
               </button>
             </div>
-          </div>
-
-          {/* Products */}
-          <div className="flex-1">
-            <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-              {products?.length} Products
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products?.length === 0 ? (
-                <Loader />
-              ) : (
-                products?.map((p) => (
-                  <div className="bg-white rounded-lg shadow-md p-4" key={p._id}>
-                    <ProductCard p={p} />
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          )}
         </div>
+
+        {/* Results Count */}
+        <div className="flex justify-between items-center mb-6">
+          <p className="text-tech-text-secondary">
+            Showing {currentProducts.length} of {filteredProducts.length} games
+          </p>
+          {filteredProducts.length > 0 && (
+            <p className="text-tech-blue font-display font-semibold">
+              {filteredProducts.length} games found
+            </p>
+          )}
+        </div>
+
+        {/* Products Grid */}
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <Loader />
+          </div>
+        ) : error ? (
+          <Message variant="danger">
+            {error?.data?.message || error.error}
+          </Message>
+        ) : currentProducts.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="w-24 h-24 bg-gradient-to-r from-tech-purple to-tech-pink rounded-full flex items-center justify-center mx-auto mb-6">
+              <FaGamepad size={48} className="text-white" />
+            </div>
+            <h2 className="text-2xl font-display font-semibold mb-4 text-tech-white">
+              No games found
+            </h2>
+            <p className="text-tech-text-secondary mb-8">
+              Try adjusting your search or filters to find what you're looking for.
+            </p>
+            <button
+              onClick={clearFilters}
+              className="tech-btn bg-gradient-to-r from-tech-blue to-tech-purple hover:from-tech-purple hover:to-tech-blue"
+            >
+              CLEAR ALL FILTERS
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {currentProducts.map((product) => (
+                <div key={product._id} className="tech-card group overflow-hidden">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    {product.discount > 0 && (
+                      <div className="absolute top-4 left-4 tech-discount">
+                        -{product.discount}%
+                      </div>
+                    )}
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      {product.platform?.map((platform) => (
+                        <div key={platform} className="tech-platform">
+                          {platformIcons[platform] || <FaGamepad />}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-tech-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-lg font-display font-semibold text-tech-white group-hover:text-tech-blue transition-colors duration-300">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center gap-1">
+                        <FaStar className="tech-rating" />
+                        <span className="text-sm text-tech-text-secondary">
+                          {product.rating?.toFixed(1) || "N/A"}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 mb-4">
+                      {product.category && (
+                        <span className="tech-category-tag">
+                          {product.category}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {product.oldPrice && (
+                          <span className="tech-price-old">
+                            ${product.oldPrice}
+                          </span>
+                        )}
+                        <span className="tech-price">
+                          ${product.price}
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Link
+                          to={`/product/${product._id}`}
+                          className="tech-btn bg-gradient-to-r from-tech-blue to-tech-purple hover:from-tech-purple hover:to-tech-blue text-sm px-3 py-2"
+                        >
+                          VIEW
+                        </Link>
+                        <button
+                          onClick={() => addToCartHandler(product)}
+                          className="tech-btn bg-gradient-to-r from-tech-emerald to-tech-cyan hover:from-tech-cyan hover:to-tech-emerald text-sm px-3 py-2"
+                        >
+                          <FaShoppingCart size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="tech-pagination mt-12">
+                <button
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="tech-btn bg-gradient-to-r from-tech-gray to-tech-light hover:from-tech-light hover:to-tech-gray disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`tech-btn ${
+                      currentPage === page
+                        ? "bg-gradient-to-r from-tech-blue to-tech-purple"
+                        : "bg-gradient-to-r from-tech-gray to-tech-light hover:from-tech-light hover:to-tech-gray"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                
+                <button
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="tech-btn bg-gradient-to-r from-tech-gray to-tech-light hover:from-tech-light hover:to-tech-gray disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

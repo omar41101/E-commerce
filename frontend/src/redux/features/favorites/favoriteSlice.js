@@ -18,10 +18,13 @@ const favoriteSlice = createSlice({
       // Set the favorites from localStorage
       return action.payload;
     },
+    clearFavorites: (state) => {
+      return [];
+    },
   },
 });
 
-export const { addToFavorites, removeFromFavorites, setFavorites } =
+export const { addToFavorites, removeFromFavorites, setFavorites, clearFavorites } =
   favoriteSlice.actions;
 export const selectFavoriteProduct = (state) => state.favorites;
 export default favoriteSlice.reducer;

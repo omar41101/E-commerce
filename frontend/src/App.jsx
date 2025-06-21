@@ -1,23 +1,54 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Navigation from "./pages/Auth/Navigation";
-<<<<<<< HEAD
+import Header from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-=======
- import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
->>>>>>> b14cb85f8248ae5b904a0dddfe96f3f5c0e910d1
-function App() {
+const App = () => {
+  const { userInfo, isAuthenticated } = useSelector((state) => state.auth);
+  const location = useLocation();
+  
+  // Check if current route is an auth page
+  const isAuthPage = ['/login', '/register'].includes(location.pathname);
+  
+  // Show full layout for authenticated users or non-auth pages
+  const showFullLayout = isAuthenticated && userInfo && !isAuthPage;
+
   return (
-    <>
-      <ToastContainer />
-      <Navigation />
-      <main className="py-3">
-        <Outlet />
-      </main>
-    </>
+    <div className="min-h-screen bg-tech-black">
+      {showFullLayout ? (
+        <>
+          <Header />
+          <div className="flex">
+            <Navigation />
+            <main className="flex-1 ml-16 lg:ml-0 lg:pl-16">
+              <Outlet />
+            </main>
+          </div>
+        </>
+      ) : (
+        // Auth pages layout - no navigation or header
+        <main className="w-full">
+          <Outlet />
+        </main>
+      )}
+      
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        toastClassName="tech-toast"
+      />
+    </div>
   );
-}
+};
 
 export default App;
