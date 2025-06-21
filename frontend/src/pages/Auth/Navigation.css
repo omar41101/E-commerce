@@ -298,8 +298,8 @@
   color: #00d4ff;
   border: 1px solid rgba(0, 212, 255, 0.4);
   box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
-}
-
+  }
+  
 .tech-nav-icon {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 1.25rem;
@@ -343,8 +343,8 @@
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
-}
-
+  }
+  
 .tech-user-avatar {
   width: 48px;
   height: 48px;
@@ -399,8 +399,8 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
+  }
+  
 /* Enhanced Dropdown Menu */
 .tech-dropdown {
   background: linear-gradient(135deg, rgba(10, 10, 15, 0.98), rgba(20, 20, 35, 0.98));
@@ -421,8 +421,8 @@
   font-family: 'Inter', system-ui, sans-serif;
   color: #f8f9fa;
   text-decoration: none;
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
   gap: 8px;
   position: relative;
   overflow: hidden;
@@ -437,8 +437,8 @@
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
   transition: left 0.3s ease;
-}
-
+  }
+  
 .tech-dropdown-item:hover::before {
   left: 100%;
 }
@@ -524,10 +524,10 @@
   height: 18px;
   background: linear-gradient(135deg, #ef4444, #dc2626);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
   font-weight: 700;
   color: white;
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
@@ -551,8 +551,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 8px;
   padding: 8px 12px;
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
   gap: 8px;
   width: 100%;
   text-align: left;
@@ -562,8 +562,8 @@
   background: rgba(0, 212, 255, 0.1);
   transform: translateX(4px);
   box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
-}
-
+  }
+  
 /* Time Display */
 .time-display {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(0, 212, 255, 0.01));
@@ -572,8 +572,8 @@
   backdrop-filter: blur(5px);
   text-align: center;
   padding: 12px;
-}
-
+  }
+  
 /* Responsive Design */
 @media (max-width: 1024px) {
   .tech-nav {
@@ -648,8 +648,8 @@
 /* Animation Classes */
 .nav-fade-in {
   animation: fadeIn 0.5s ease-in-out;
-}
-
+  }
+  
 .nav-slide-in {
   animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -682,17 +682,17 @@
 .hover-glow:hover {
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
   transform: translateY(-2px);
-}
-
+  }
+  
 /* Loading States */
 .loading-shimmer {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-}
-
+  }
+  
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
-}
+  }
   

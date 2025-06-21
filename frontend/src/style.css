@@ -1253,3 +1253,33 @@ body {
     transform: scale(0.9) translateY(-20px);
   }
 }
+
+/* Tech Loader Spinner */
+.tech-loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(0,212,255,0.15);
+  border-top: 5px solid var(--tech-blue);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 4px 24px 0 rgba(0,212,255,0.12), 0 1.5px 8px 0 rgba(124,58,237,0.10);
+  backdrop-filter: blur(6px);
+  animation: spin 1s linear infinite, loaderGlow 2s ease-in-out infinite alternate;
+  margin: 24px auto;
+  position: relative;
+}
+
+@keyframes loaderGlow {
+  0% {
+    box-shadow: 0 0 16px 2px var(--tech-blue), 0 1.5px 8px 0 rgba(124,58,237,0.10);
+    border-top: 5px solid var(--tech-blue);
+  }
+  50% {
+    box-shadow: 0 0 32px 6px var(--tech-purple), 0 1.5px 8px 0 rgba(236,72,153,0.10);
+    border-top: 5px solid var(--tech-pink);
+  }
+  100% {
+    box-shadow: 0 0 16px 2px var(--tech-blue), 0 1.5px 8px 0 rgba(124,58,237,0.10);
+    border-top: 5px solid var(--tech-blue);
+  }
+}

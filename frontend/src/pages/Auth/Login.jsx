@@ -70,27 +70,27 @@ const Login = () => {
       </div>
 
       {/* Login Form */}
-      <form onSubmit={submitHandler} className="space-y-6">
-        <div>
+        <form onSubmit={submitHandler} className="space-y-6">
+          <div>
           <label className="block text-tech-blue font-display font-semibold mb-2 uppercase tracking-wider text-sm">
             <FaEnvelope className="inline mr-2" />
-            Email Address
-          </label>
-          <input
-            type="email"
+              Email Address
+            </label>
+            <input
+              type="email"
             className="tech-search w-full"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             required
-          />
-        </div>
+            />
+          </div>
 
-        <div>
+          <div>
           <label className="block text-tech-purple font-display font-semibold mb-2 uppercase tracking-wider text-sm">
             <FaLock className="inline mr-2" />
-            Password
-          </label>
+              Password
+            </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg className="h-5 w-5 text-tech-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -122,13 +122,13 @@ const Login = () => {
               )}
             </button>
           </div>
-        </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={isLoading}
+          <button
+            type="submit"
+            disabled={isLoading}
           className="tech-btn w-full bg-gradient-to-r from-tech-emerald to-tech-cyan hover:from-tech-cyan hover:to-tech-emerald disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
+          >
           {isLoading ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -140,20 +140,20 @@ const Login = () => {
               SIGN IN
             </>
           )}
-        </button>
-      </form>
+          </button>
+        </form>
 
       {/* Register Link */}
       <div className="mt-8 text-center">
         <p className="text-tech-text-secondary text-sm">
           New to Tech Store?{" "}
-          <Link
-            to={redirect ? `/register?redirect=${redirect}` : "/register"}
+            <Link
+              to={redirect ? `/register?redirect=${redirect}` : "/register"}
             className="text-tech-blue hover:text-tech-cyan transition-colors duration-300 font-display font-semibold"
-          >
+            >
             Create Account
-          </Link>
-        </p>
+            </Link>
+          </p>
       </div>
 
       {/* Features */}
@@ -171,7 +171,7 @@ const Login = () => {
           <p className="text-xs font-tech">Secure</p>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 

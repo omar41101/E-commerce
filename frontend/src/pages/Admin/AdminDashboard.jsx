@@ -5,6 +5,7 @@ import {
   useGetTotalSalesByDateQuery,
   useGetTotalSalesQuery,
 } from "../../redux/api/orderApiSlice";
+import { FaDollarSign, FaUsers, FaShoppingCart } from "react-icons/fa";
 
 import { useState, useEffect } from "react";
 import AdminMenu from "./AdminMenu";
@@ -93,47 +94,50 @@ const AdminDashboard = () => {
       <AdminMenu />
 
       <section className="xl:ml-[4rem] md:ml-[0rem]">
-        <div className="w-[80%] flex justify-around flex-wrap">
-          <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-            <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
-              $
+        <div className="w-[80%] flex justify-around flex-wrap gap-8 mx-auto mt-8">
+          {/* Sales Card */}
+          <div className="tech-card p-8 w-[20rem] flex flex-col items-center text-center group hover:shadow-xl hover:glow-blue transition-all duration-300 relative overflow-hidden">
+            <div className="w-16 h-16 bg-gradient-to-r from-tech-blue to-tech-purple rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <FaDollarSign size={32} className="text-white" />
             </div>
-
-            <p className="mt-5">Sales</p>
-            
-          </div>
-          <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-            <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
-              $
-            </div>
-
-            <p className="mt-5">Customers</p>
-            <h1 className="text-xl font-bold">
-              $ {isLoading ? <Loader /> : customers?.length}
+            <h3 className="text-xl font-display font-semibold mb-2 gradient-text">Total Sales</h3>
+            <p className="text-tech-text-secondary mb-4">Total revenue generated</p>
+            <h1 className="text-3xl font-bold text-tech-blue">
+              {isLoading ? <Loader /> : `$${sales?.totalSales?.toLocaleString() || 0}`}
             </h1>
           </div>
-          <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-            <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
-              $
+          {/* Customers Card */}
+          <div className="tech-card p-8 w-[20rem] flex flex-col items-center text-center group hover:shadow-xl hover:glow-purple transition-all duration-300 relative overflow-hidden">
+            <div className="w-16 h-16 bg-gradient-to-r from-tech-emerald to-tech-cyan rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <FaUsers size={32} className="text-white" />
             </div>
-
-            <p className="mt-5">All Orders</p>
-            <h1 className="text-xl font-bold">
-              $ {isLoading ? <Loader /> : orders?.totalOrders}
+            <h3 className="text-xl font-display font-semibold mb-2 gradient-text">Customers</h3>
+            <p className="text-tech-text-secondary mb-4">Registered users</p>
+            <h1 className="text-3xl font-bold text-tech-emerald">
+              {isLoading ? <Loader /> : customers?.length || 0}
+            </h1>
+          </div>
+          {/* Orders Card */}
+          <div className="tech-card p-8 w-[20rem] flex flex-col items-center text-center group hover:shadow-xl hover:glow-pink transition-all duration-300 relative overflow-hidden">
+            <div className="w-16 h-16 bg-gradient-to-r from-tech-pink to-tech-orange rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <FaShoppingCart size={32} className="text-white" />
+            </div>
+            <h3 className="text-xl font-display font-semibold mb-2 gradient-text">All Orders</h3>
+            <p className="text-tech-text-secondary mb-4">Total orders placed</p>
+            <h1 className="text-3xl font-bold text-tech-pink">
+              {isLoading ? <Loader /> : orders?.totalOrders || 0}
             </h1>
           </div>
         </div>
-
-        <div className="ml-[10rem] mt-[4rem]">
+        <div className="mx-auto mt-16 max-w-4xl bg-tech-dark/60 rounded-2xl p-8 shadow-2xl backdrop-blur-xl border border-tech-blue/10">
           <Chart
             options={state.options}
             series={state.series}
             type="bar"
-            width="70%"
+            width="100%"
           />
         </div>
-
-        <div className="mt-[4rem]">
+        <div className="mt-16">
           <OrderList />
         </div>
       </section>

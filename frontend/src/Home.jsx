@@ -4,6 +4,7 @@ import Loader from "./components/Loader";
 import Message from "./components/Message";
 import { FaStar, FaShoppingCart, FaHeart, FaGamepad, FaDesktop, FaMobile } from "react-icons/fa";
 import { SiPlaystation, SiXbox, SiNintendo, SiSteam } from "react-icons/si";
+import ProductCarousel from "./pages/Products/ProductCarousel";
 
 const Home = () => {
   const { data: products, isLoading, error } = useGetTopProductsQuery();
@@ -83,6 +84,16 @@ const Home = () => {
               <p className="text-tech-text-secondary">Round-the-clock customer support for all your gaming needs</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Stunning Product Carousel */}
+      <div className="py-20 bg-tech-black">
+        <div className="container mx-auto px-6">
+          <h2 className="text-4xl md:text-5xl font-display font-bold gradient-text text-center mb-12">
+            TOP PICKS
+          </h2>
+          <ProductCarousel />
         </div>
       </div>
 

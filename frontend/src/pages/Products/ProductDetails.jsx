@@ -65,131 +65,132 @@ const ProductDetails = () => {
 
   return (
     <>
-      <div className="max-w-screen-xl mx-auto px-6 py-8">
-        <Link
-          to="/"
-          className="text-pink-500 font-medium hover:underline inline-block mb-4"
-        >
-          Go Back
-        </Link>
+      <div className="min-h-screen bg-tech-black text-tech-white">
+        <div className="max-w-screen-xl mx-auto px-6 py-8">
+          <Link
+            to="/"
+            className="text-tech-blue font-medium hover:underline inline-block mb-4"
+          >
+            Go Back
+          </Link>
 
-        {isLoading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">
-            {error?.data?.message || error.message}
-          </Message>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Product Image in Pink Box */}
-            <div className="lg:col-span-6 flex justify-center">
-              <div className="border-4 border-pink-500 rounded-lg shadow-lg p-2 bg-gray-800">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full object-cover rounded-md"
+          {isLoading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">
+              {error?.data?.message || error.message}
+            </Message>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Product Image in Tech Card */}
+              <div className="lg:col-span-6 flex justify-center">
+                <div className="tech-card border-4 border-tech-blue/20 rounded-xl shadow-lg p-2 bg-tech-dark">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full object-cover rounded-md border border-tech-blue/10"
+                  />
+                </div>
+              </div>
+
+              {/* Product Details */}
+              <div className="lg:col-span-6 flex flex-col space-y-6">
+                <h1 className="text-3xl font-bold text-tech-white font-display">
+                  {product.name}
+                </h1>
+                <p className="text-tech-text-secondary text-lg leading-relaxed">
+                  {product.description}
+                </p>
+                <p className="text-4xl font-bold text-tech-blue">
+                  ${product.price}
+                </p>
+
+                <div className="grid grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <p className="flex items-center text-tech-text-secondary">
+                      <FaStore className="mr-2 text-tech-blue" /> Brand: {product.brand}
+                    </p>
+                    <p className="flex items-center text-tech-text-secondary">
+                      <FaClock className="mr-2 text-tech-blue" />
+                      Added: {moment(product.createAt).fromNow()}
+                    </p>
+                    <p className="flex items-center text-tech-text-secondary">
+                      <FaStar className="mr-2 text-yellow-500" />
+                      Reviews: {product.numReviews}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="flex items-center text-tech-text-secondary">
+                      <FaStar className="mr-2 text-yellow-500" />
+                      Ratings: {product.rating}
+                    </p>
+                    <p className="flex items-center text-tech-text-secondary">
+                      <FaShoppingCart className="mr-2 text-tech-blue" />
+                      Quantity: {product.quantity}
+                    </p>
+                    <p className="flex items-center text-tech-text-secondary">
+                      <FaBox className="mr-2 text-tech-blue" />
+                      In Stock: {product.countInStock}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                  {product.countInStock > 0 && (
+                    <select
+                      value={qty}
+                      onChange={(e) => setQty(e.target.value)}
+                      className="p-2 bg-tech-dark border border-tech-blue/20 text-tech-white rounded-lg focus:ring focus:ring-tech-blue"
+                    >
+                      {[...Array(product.countInStock).keys()].map((x) => (
+                        <option key={x + 1} value={x + 1} className="text-black">
+                          {x + 1}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  <button
+                    onClick={addToCartHandler}
+                    disabled={product.countInStock === 0}
+                    className={`tech-btn ${
+                      product.countInStock > 0
+                        ? "bg-tech-blue hover:bg-tech-blue/80"
+                        : "bg-gray-500 cursor-not-allowed"
+                    } text-white py-2 px-6 rounded-lg font-medium transition`}
+                  >
+                    Add to Cart
+                  </button>
+
+                  {/* Favorite Icon Beside Add to Cart */}
+                  <HeartIcon
+                    product={product}
+                    className="text-tech-blue hover:text-tech-blue/80"
+                  />
+                </div>
+
+                <Ratings
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
+                />
+              </div>
+
+              {/* Product Tabs */}
+              <div className="lg:col-span-12 mt-8">
+                <ProductTabs
+                  loadingProductReview={loadingProductReview}
+                  userInfo={userInfo}
+                  submitHandler={submitHandler}
+                  rating={rating}
+                  setRating={setRating}
+                  comment={comment}
+                  setComment={setComment}
+                  product={product}
                 />
               </div>
             </div>
-
-            {/* Product Details */}
-            <div className="lg:col-span-6 flex flex-col space-y-6">
-              <h1 className="text-3xl font-semibold text-gray-100">
-                {product.name}
-              </h1>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                {product.description}
-              </p>
-              <p className="text-4xl font-bold text-pink-500">
-                ${product.price}
-              </p>
-
-              <div className="grid grid-cols-2 gap-6 mt-6">
-                <div>
-                  <p className="flex items-center text-gray-300">
-                    <FaStore className="mr-2 text-gray-400" /> Brand:{" "}
-                    {product.brand}
-                  </p>
-                  <p className="flex items-center text-gray-300">
-                    <FaClock className="mr-2 text-gray-400" />
-                    Added: {moment(product.createAt).fromNow()}
-                  </p>
-                  <p className="flex items-center text-gray-300">
-                    <FaStar className="mr-2 text-gray-400" />
-                    Reviews: {product.numReviews}
-                  </p>
-                </div>
-                <div>
-                  <p className="flex items-center text-gray-300">
-                    <FaStar className="mr-2 text-gray-400" />
-                    Ratings: {product.rating}
-                  </p>
-                  <p className="flex items-center text-gray-300">
-                    <FaShoppingCart className="mr-2 text-gray-400" />
-                    Quantity: {product.quantity}
-                  </p>
-                  <p className="flex items-center text-gray-300">
-                    <FaBox className="mr-2 text-gray-400" />
-                    In Stock: {product.countInStock}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                {product.countInStock > 0 && (
-                  <select
-                    value={qty}
-                    onChange={(e) => setQty(e.target.value)}
-                    className="p-2 bg-gray-700 text-gray-200 rounded-lg focus:ring focus:ring-pink-500"
-                  >
-                    {[...Array(product.countInStock).keys()].map((x) => (
-                      <option key={x + 1} value={x + 1}>
-                        {x + 1}
-                      </option>
-                    ))}
-                  </select>
-                )}
-
-                <button
-                  onClick={addToCartHandler}
-                  disabled={product.countInStock === 0}
-                  className={`${
-                    product.countInStock > 0
-                      ? "bg-pink-600 hover:bg-pink-700"
-                      : "bg-gray-500 cursor-not-allowed"
-                  } text-white py-2 px-6 rounded-lg font-medium transition`}
-                >
-                  Add to Cart
-                </button>
-
-                {/* Favorite Icon Beside Add to Cart */}
-                  <HeartIcon
-                    product={product}
-                    className="text-pink-500 hover:text-pink-600"
-                  />
-               </div>
-
-              <Ratings
-                value={product.rating}
-                text={`${product.numReviews} reviews`}
-              />
-            </div>
-
-            {/* Product Tabs */}
-            <div className="lg:col-span-12">
-              <ProductTabs
-                loadingProductReview={loadingProductReview}
-                userInfo={userInfo}
-                submitHandler={submitHandler}
-                rating={rating}
-                setRating={setRating}
-                comment={comment}
-                setComment={setComment}
-                product={product}
-              />
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );

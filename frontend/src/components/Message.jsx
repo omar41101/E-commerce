@@ -1,13 +1,13 @@
 const Message = ({ children, variant = "info" }) => {
   const getVariantClasses = () => {
-    switch (variant) {
-      case "success":
+        switch (variant) {
+            case "success":
         return "tech-alert success border-tech-emerald text-tech-emerald";
       case "danger":
         return "tech-alert error border-tech-red text-tech-red";
       case "warning":
         return "tech-alert warning border-tech-orange text-tech-orange";
-      default:
+                    default:
         return "tech-alert info border-tech-blue text-tech-blue";
     }
   };
@@ -45,4 +45,4 @@ const Message = ({ children, variant = "info" }) => {
   );
 };
 
-export default Message 
+export default Message

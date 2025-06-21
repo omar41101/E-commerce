@@ -17,14 +17,14 @@ const ProductCard = ({ p }) => {
   };
 
   return (
-    <div className="max-w-sm relative bg-gradient-to-b from-[#1A1A1A] to-[#2A2A2A] rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+    <div className="tech-card max-w-sm relative rounded-xl shadow-lg hover:shadow-xl transition-all">
       <section className="relative">
         <Link to={`/product/${p._id}`}>
-          <span className="absolute bottom-3 right-3 bg-pink-600 text-white text-xs font-medium mr-2 px-3 py-1 rounded-full shadow-md">
+          <span className="absolute bottom-3 right-3 bg-tech-blue/10 text-tech-blue text-xs font-semibold mr-2 px-3 py-1 rounded-full shadow-md">
             {p?.brand}
           </span>
           <img
-            className="cursor-pointer w-full rounded-t-lg transition-transform duration-300 hover:scale-110"
+            className="cursor-pointer w-full rounded-t-xl border border-tech-blue/10 transition-transform duration-300 hover:scale-105"
             src={p.image}
             alt={p.name}
             style={{ height: "180px", objectFit: "cover" }}
@@ -35,25 +35,25 @@ const ProductCard = ({ p }) => {
 
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h5 className="text-lg font-semibold text-gray-100 truncate">
+          <h5 className="text-lg font-semibold text-tech-white font-display truncate">
             {p?.name}
           </h5>
-          <p className="text-lg font-bold text-pink-400">
+          <span className="text-lg font-bold text-tech-blue">
             {p?.price?.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
-          </p>
+          </span>
         </div>
 
-        <p className="mb-4 text-gray-400 text-sm h-12 overflow-hidden">
+        <p className="mb-4 text-tech-text-secondary text-sm h-12 overflow-hidden">
           {p?.description?.substring(0, 60)}...
         </p>
 
         <section className="flex justify-between items-center">
           <Link
             to={`/product/${p._id}`}
-            className="inline-flex items-center px-5 py-2 bg-pink-600 text-white text-sm font-medium rounded-lg hover:bg-pink-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400"
+            className="tech-btn bg-tech-blue hover:bg-tech-blue/80 text-white text-sm font-medium px-5 py-2 rounded-lg transition-colors duration-150"
           >
             Read More
             <svg
@@ -73,7 +73,7 @@ const ProductCard = ({ p }) => {
           </Link>
 
           <button
-            className="p-3 bg-gray-700 hover:bg-gray-600 text-white rounded-full shadow-md transition duration-300"
+            className="p-3 bg-tech-blue hover:bg-tech-blue/80 text-white rounded-full shadow-md transition-colors duration-150"
             onClick={() => addToCartHandler(p, 1)}
           >
             <AiOutlineShoppingCart size={20} />

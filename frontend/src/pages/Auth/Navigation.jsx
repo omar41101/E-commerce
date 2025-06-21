@@ -20,11 +20,6 @@ import {
   FaCrown,
   FaCoins,
   FaGift,
-  FaDiscord,
-  FaSteam,
-  FaPlaystation,
-  FaXbox,
-  FaNintendoSwitch
 } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -92,7 +87,7 @@ const Navigation = () => {
   ];
 
   const adminItems = [
-    { path: '/admin', icon: AiOutlineCrown, label: 'DASHBOARD', color: 'tech-yellow' },
+    { path: '/admin/dashboard', icon: AiOutlineCrown, label: 'DASHBOARD', color: 'tech-yellow' },
     { path: '/admin/productlist', icon: AiOutlineShopping, label: 'PRODUCTS', color: 'tech-orange' },
     { path: '/admin/categorylist', icon: AiOutlineSetting, label: 'CATEGORIES', color: 'tech-red' },
     { path: '/admin/orderlist', icon: AiOutlineOrderedList, label: 'ORDERS', color: 'tech-indigo' },

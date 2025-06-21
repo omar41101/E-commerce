@@ -45,6 +45,7 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<Profile />} />
         <Route path="/shipping" element={<Shipping />} />
         <Route path="/placeorder" element={<PlaceOrder />} />
+        <Route path="/orders" element={<Order />} />
         <Route path="/order/:id" element={<Order />} />
         <Route index={true} element={<Home />} />
       </Route>

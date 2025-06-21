@@ -28,14 +28,14 @@ const Favorites = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-tech-black text-tech-white">
       {/* Hero Section */}
-      <div className="  py-20 px-6 rounded-lg shadow-xl">
+      <div className="py-20 px-6 rounded-lg shadow-xl bg-tech-dark/60 border-b border-tech-blue/10">
         <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold tracking-wider">
+          <h1 className="text-5xl font-display font-bold tracking-wider text-tech-blue">
             Your Favorite Products
           </h1>
-          <p className="mt-4 text-lg">
+          <p className="mt-4 text-lg text-tech-text-secondary">
             Browse your handpicked favorite items, personalized just for you.
           </p>
         </div>
@@ -47,31 +47,31 @@ const Favorites = () => {
           {currentProducts.map((product) => (
             <div
               key={product._id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl"
+              className="tech-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all bg-tech-dark border border-tech-blue/10"
             >
-              <div className="h-52 bg-gray-200 flex items-center justify-center p-4">
+              <div className="h-52 bg-tech-dark flex items-center justify-center p-4 border-b border-tech-blue/10">
                 <img
-                  src={product.image || "https://via.placeholder.com/300"}
+                  src={product.image || 'https://via.placeholder.com/300'}
                   alt={product.name}
                   className="h-full object-contain"
                 />
               </div>
 
               <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-tech-white font-display">
                   {product.name}
                 </h2>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-tech-text-secondary">
                   {product.description.substring(0, 60)}...
                 </p>
               </div>
 
-              <div className="px-6 py-4 flex items-center justify-between">
-                <button className="bg-gradient-to-r from-teal-400 to-blue-500 text-white py-2 px-4 rounded-lg shadow-sm hover:bg-gradient-to-l from-teal-500 to-blue-600 transition-all duration-300 text-base font-medium focus:outline-none">
+              <div className="px-6 py-4 flex items-center justify-between gap-2">
+                <button className="tech-btn bg-tech-blue hover:bg-tech-blue/80 text-white py-2 px-4 text-base font-medium focus:outline-none rounded-lg transition-colors duration-150">
                   View Details
                 </button>
 
-                <button className="bg-gradient-to-r from-pink-400 to-red-500 text-white py-2 px-2 rounded-lg shadow-sm hover:bg-gradient-to-l from-pink-500 to-red-600 transition-all duration-300 text-base font-medium focus:outline-none">
+                <button className="tech-btn bg-tech-dark hover:bg-tech-blue/20 text-white py-2 px-4 text-base font-medium border border-tech-blue/20 focus:outline-none rounded-lg transition-colors duration-150">
                   Add to Cart
                 </button>
               </div>
@@ -85,22 +85,22 @@ const Favorites = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-700 text-white rounded-full shadow-md hover:bg-gradient-to-l from-gray-600 to-gray-800 transition-all duration-300 ${
-            currentPage === 1 && "opacity-50 cursor-not-allowed"
+          className={`tech-btn bg-tech-dark hover:bg-tech-blue/20 text-white px-6 py-3 rounded-full shadow-md transition-colors duration-150 ${
+            currentPage === 1 && 'opacity-50 cursor-not-allowed'
           }`}
         >
           Previous
         </button>
 
-        <span className="px-4 py-2 text-lg font-semibold text-gray-900">
+        <span className="px-4 py-2 text-lg font-semibold text-tech-white">
           Page {currentPage} of {totalPages}
         </span>
 
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-700 text-white rounded-full shadow-md hover:bg-gradient-to-l from-gray-600 to-gray-800 transition-all duration-300 ${
-            currentPage === totalPages && "opacity-50 cursor-not-allowed"
+          className={`tech-btn bg-tech-dark hover:bg-tech-blue/20 text-white px-6 py-3 rounded-full shadow-md transition-colors duration-150 ${
+            currentPage === totalPages && 'opacity-50 cursor-not-allowed'
           }`}
         >
           Next

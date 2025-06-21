@@ -59,12 +59,12 @@ const Register = () => {
       return;
     }
 
-    try {
-      const res = await register({ username, email, password }).unwrap();
-      dispatch(setCredientials({ ...res }));
-      navigate(redirect);
+      try {
+        const res = await register({ username, email, password }).unwrap();
+        dispatch(setCredientials({ ...res }));
+        navigate(redirect);
       showSuccessAlert('Registration Successful', 'Welcome to TechGaming! Your account has been created.');
-    } catch (error) {
+      } catch (error) {
       const errorMessage = error.data?.message || "An error occurred during registration. Please try again.";
       showErrorAlert('Registration Failed', errorMessage);
     }
@@ -120,7 +120,7 @@ const Register = () => {
               required
             />
           </div>
-        </div>
+          </div>
 
         {/* Second Row: Password and Confirm Password */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -130,12 +130,12 @@ const Register = () => {
               Password
             </label>
             <div className="relative">
-              <input
+            <input
                 type={showPassword ? 'text' : 'password'}
                 className="tech-search w-full"
                 placeholder="Enter your password"
                 name="password"
-                value={password}
+              value={password}
                 onChange={handleChange}
                 required
               />
@@ -164,12 +164,12 @@ const Register = () => {
               Confirm Password
             </label>
             <div className="relative">
-              <input
+            <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 className="tech-search w-full"
                 placeholder="Confirm your password"
                 name="confirmPassword"
-                value={confirmPassword}
+              value={confirmPassword}
                 onChange={handleChange}
                 required
               />
@@ -191,13 +191,13 @@ const Register = () => {
               </button>
             </div>
           </div>
-        </div>
+          </div>
 
-        <button
-          disabled={isLoading}
-          type="submit"
+          <button
+            disabled={isLoading}
+            type="submit"
           className="tech-btn w-full bg-gradient-to-r from-tech-purple to-tech-pink hover:from-tech-pink hover:to-tech-purple disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
+          >
           {isLoading ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -209,20 +209,20 @@ const Register = () => {
               CREATE ACCOUNT
             </>
           )}
-        </button>
-      </form>
+          </button>
+        </form>
 
       {/* Login Link */}
       <div className="mt-8 text-center">
         <p className="text-tech-text-secondary text-sm">
-          Already have an account?{" "}
-          <Link
-            to={redirect ? `/login?redirect=${redirect}` : "/login"}
+            Already have an account?{" "}
+            <Link
+              to={redirect ? `/login?redirect=${redirect}` : "/login"}
             className="text-tech-purple hover:text-tech-pink transition-colors duration-300 font-display font-semibold"
-          >
+            >
             Sign In
-          </Link>
-        </p>
+            </Link>
+          </p>
       </div>
 
       {/* Benefits */}
@@ -244,7 +244,7 @@ const Register = () => {
           <p className="text-xs font-tech">Premium Games</p>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 

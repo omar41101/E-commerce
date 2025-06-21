@@ -146,50 +146,54 @@ const CategoryList = () => {
   
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <AdminMenu />
-      <div className="md:w-3/4 p-6 bg-gray-800 rounded-lg shadow-lg">
-        <div className="text-2xl font-bold text-white mb-6 text-center">Manage Categories</div>
-        <div className="bg-gray-700 p-4 rounded-lg mb-8">
-          <CategoryForm
-            value={name}
-            setValue={setName}
-            handleSubmit={handleCreateCategory}
-            placeholder="Enter new category name"
-          />
+    <div className="min-h-screen flex items-center justify-center bg-tech-black">
+      <div className="flex flex-col md:flex-row w-full max-w-3xl mx-auto gap-8">
+        <div className="md:w-1/4 p-0 md:pr-4 flex items-start justify-center">
+          <div className="bg-tech-dark/70 border border-tech-blue/10 rounded-2xl p-4 shadow-lg h-full">
+            <AdminMenu />
+          </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categories?.map((category) => (
-            <div key={category._id} className="bg-gray-700 p-4 rounded-lg shadow-lg">
-              <div className="flex justify-between items-center">
-                <span className="text-white font-semibold">{category.name}</span>
-                <button
-                  className="text-pink-500 hover:text-pink-600 focus:outline-none"
-                  onClick={() => {
-                    setModalVisible(true);
-                    console.log(category);
-                    setSelectedCategory(category);
-                    setUpdatingName(category.name);
-                  }}
-                >
-                  Edit
-                </button>
-              </div>
+        <div className="md:w-3/4 flex items-center justify-center">
+          <div className="tech-card w-full max-w-md p-8 md:p-10 shadow-xl border border-tech-blue/10 backdrop-blur-xl mx-auto">
+            <div className="text-2xl font-display font-bold mb-2 text-center text-tech-blue">Manage Categories</div>
+            <div className="border-t border-tech-blue/10 mb-6"></div>
+            <div className="bg-tech-dark/60 border border-tech-blue/10 p-4 rounded-lg mb-8">
+              <CategoryForm
+                value={name}
+                setValue={setName}
+                handleSubmit={handleCreateCategory}
+                placeholder="Enter new category name"
+              />
             </div>
-          ))}
+            <div className="grid grid-cols-1 gap-4">
+              {categories?.map((category) => (
+                <div key={category._id} className="bg-tech-dark/60 border border-tech-blue/10 p-4 rounded-lg flex justify-between items-center">
+                  <span className="text-tech-white font-semibold">{category.name}</span>
+                  <button
+                    className="text-tech-blue hover:text-tech-white font-display font-semibold focus:outline-none"
+                    onClick={() => {
+                      setModalVisible(true);
+                      setSelectedCategory(category);
+                      setUpdatingName(category.name);
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
+              ))}
+            </div>
+            {/* Modal with Update and Delete functionality */}
+            <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+              <CategoryForm
+                value={updatingName}
+                setValue={(value) => setUpdatingName(value)}
+                handleSubmit={handleUpdateCategory}
+                buttonText="Update"
+                handleDelete={handleDeleteCategory}
+              />
+            </Modal>
+          </div>
         </div>
-
-        {/* Modal with Update and Delete functionality */}
-        <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
-          <CategoryForm
-            value={updatingName}
-            setValue={(value) => setUpdatingName(value)}
-            handleSubmit={handleUpdateCategory}
-            buttonText="Update"
-            handleDelete={handleDeleteCategory} // Pass delete handler to CategoryForm
-          />
-        </Modal>
       </div>
     </div>
   );
